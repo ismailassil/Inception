@@ -1,12 +1,10 @@
 #!/bin/bash
 
 echo "Starting Mariadb..."
-
-service mariadb status
 service mariadb start
 
 # wait for the service to start
-sleep 2
+sleep 3
 
 echo "Configuring Mariadb..."
 
@@ -26,3 +24,8 @@ sleep 1
 mariadb -e "flush privileges"
 
 echo "Mariadb has been step up successfully"
+
+sleep 3
+
+# Shutdown the mariadb to apply the configuration
+mysqladmin -u root shutdown
