@@ -1,5 +1,8 @@
 version: "3.8"
 services:
-  
-  mariadb:
-      image: mariadb
+  mariaDB:
+    build: ./mariadb
+    container_name: mariaDB_container
+    env_file:
+      - .env
+    
