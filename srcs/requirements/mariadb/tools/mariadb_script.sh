@@ -7,8 +7,6 @@ service mariadb start
 sleep 3
 
 ###### CONFIGURING mariaDB
-
-
 ## CREATE A NEW DATABASE
 mariadb -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DB"
 ## CREATE A NEW USER
