@@ -1,8 +1,11 @@
 version: "3.8"
 services:
-  mariaDB:
-    build: ./mariadb
-    container_name: mariaDB_container
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb_container
+    ports:
+      - "3306:3306"
     env_file:
       - .env
+    
     

@@ -7,17 +7,14 @@ service mariadb start
 sleep 3
 
 ###### CONFIGURING mariaDB
-database_name="wordpress_db"
-new_user="wordpress_user"
-password='pass@123'
-root_password='pass@123'
+
 
 ## CREATE A NEW DATABASE
-mariadb -e "CREATE DATABASE IF NOT EXISTS $database_name"
+mariadb -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DB"
 ## CREATE A NEW USER
-mariadb -e "CREATE USER IF NOT EXISTS '$new_user'@'localhost' IDENTIFIED BY '$password'"
+mariadb -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD'"
 ## GRANTING PERMISSIONS TO THE USER
-mariadb -e "GRANT ALL PRIVILEGES ON $database_name.* TO '$new_user'@'localhost'"
+mariadb -e "GRANT ALL PRIVILEGES ON $MYSQL_DB.* TO '$MYSQL_USER'@'localhost'"
 
 sleep 1
 
@@ -25,13 +22,15 @@ sleep 1
 mariadb -e "FLUSH PRIVILEGES"
 
 ## SET A NEW PASSWORD FOR 'root'
-mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$root_password'"
+mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'"
 
 sleep 3
 
 ###### SHUTDOWN THE mariaDB TO APPLY THE CONFIGURATION
-mysqladmin -u root -p"$root_password" shutdown
+mysqladmin -u root -p"$MYSQL_ROOT_PASSWORD" shutdown
 
 ###### STARTING THE mariaDB WITH SOME SAFETY FEATURES SUCH AS
 ####### RESTARTING THE SERVER WHEN AN ERROR OCCURS...
-mysql_safe
+####### IT WILL START THE SERVER IN FOREGROUND MODE
+####### SO THAT THE CONTAINER WILL NOT EXIT
+exec mysqld_safe
