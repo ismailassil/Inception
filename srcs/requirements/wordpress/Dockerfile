@@ -1,5 +1,3 @@
-ARG CLEAR="&& apt-get clean -y && apt-get autoremove -y"
-
 FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y	\
@@ -7,24 +5,15 @@ RUN apt-get update && apt-get upgrade -y	\
 							unzip			\
 							curl			\
 							php				\
-							php-fpm			\
+							php8.1-fpm		\
 							php-mysql		\
-							php-xml			\
-							php-curl		\
-							php-mbstring	\
-							php-zip			\
-							php-gd			\
-							php-soap		\
-							php-intl		\
-							php-json		\
-							php-bcmath		\
-							php-imagick		\
-							php-xmlrpc		\
-							php-opcache		\
-							${CLEAR}
+							mariadb-client	\
+							&& apt-get clean -y && apt-get autoremove -y
 
-RUN service restart php-fpm
+RUN service restart php8.1-fpm
 
-RUN wget https://wordpress.org/latest.zip -O /tmp/latest.zip && \
-	unzip /tmp/latest.zip -d /var/www/ && \
-	rm /tmp/latest.zip
+COPY tools/wordpress_script.sh /wordpress_script.sh
+
+RUN chmod +x wordpress_script.sh
+
+ENTRYPOINT [ "./wordpress_script.sh" ]

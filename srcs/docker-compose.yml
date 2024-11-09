@@ -1,10 +1,36 @@
 version: "3.8"
+
 services:
   mariadb:
-    build: ./requirements/mariadb
-    container_name: mariadb_container
+    build: ./requirements/mariadb/
+    container_name: my_mariadb
     restart: always
     ports:
       - "3306:3306"
     env_file:
       - .env
+    volumes:
+      - db_data:/var/lib/mysql
+
+  nginx:
+    build: ./requirements/nginx/
+    container_name: my_nginx
+    restart: always
+    ports:
+      - "8000:80"
+    env_file:
+      - .env
+    volumes:
+      - wordpress_db:
+
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: my_wordpress
+    restart: always
+    volumes:
+      - wordpress_db:/var/www/html
+  
+
+volumes:
+  db_data:
+  wordpress_db:
