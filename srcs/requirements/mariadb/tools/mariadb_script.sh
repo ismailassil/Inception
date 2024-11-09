@@ -31,4 +31,4 @@ mysqladmin -u root -p"$MYSQL_ROOT_PASSWORD" shutdown
 ####### RESTARTING THE SERVER WHEN AN ERROR OCCURS...
 ####### IT WILL START THE SERVER IN FOREGROUND MODE
 ####### SO THAT THE CONTAINER WILL NOT EXIT
-exec mysqld_safe
+exec mysqld_safe --bind_address=0.0.0.0

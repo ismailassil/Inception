@@ -1,20 +1,17 @@
-ARG CLEAR="&& apt-get clean -y && apt-get autoremove -y"
-ARG SSL_DIR_PATH="/etc/nginx/ssl"
-
 FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y	\
 	&& apt-get install nginx openssl -y		\
-	${CLEAR}
+	&& apt-get clean -y && apt-get autoremove -y
 
 ## CREATE A DEFAULT SSL DIRECTORY TO STORE ALL THE FILES
-RUN mkdir -p ${SSL_DIR_PATH}
+RUN mkdir -p /etc/nginx/ssl
 
 RUN openssl req -x509 -new -newkey rsa:4096 -nodes	\
-				-keyout ${SSL_DIR_PATH}/cert.key	\
-				-out ${SSL_DIR_PATH}/cert.crt		\
+				-keyout /etc/nginx/ssl/cert.key	\
+				-out /etc/nginx/ssl/cert.crt		\
 				-sha256 -days 365					\
-				-subj "/C=MA/ST=KH/L=KH/O=SELF/OU=IT/CN=${DOMAIN_NAME}"
+				-subj "/C=MA/ST=KH/L=KH/O=SELF/OU=IT/CN=iassil.42.f"
 
 ## --DETAILS-- 
 # openssl	req='Request' -x509='Directly creates a self-signed certificate' \
@@ -30,4 +27,4 @@ RUN openssl req -x509 -new -newkey rsa:4096 -nodes	\
 COPY tools/nginx.conf /etc/nginx/nginx.conf
 
 ## RUN THE NGINX IN THE FORGROUND
-ENTRYPOINT ["nginx", "-g", "'deamon off;'"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
