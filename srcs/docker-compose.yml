@@ -2,7 +2,9 @@ version: "3.8"
 
 services:
   mariadb:
-    build: ./requirements/mariadb/
+    build:
+      dockerfile: Dockerfile
+      context: ./requirements/mariadb/
     container_name: my_mariadb
     restart: always
     ports:
@@ -11,9 +13,13 @@ services:
       - .env
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - meine_net
 
   nginx:
-    build: ./requirements/nginx/
+    build:
+      dockerfile: Dockerfile
+      context: ./requirements/nginx/
     container_name: my_nginx
     restart: always
     ports:
@@ -22,15 +28,27 @@ services:
       - .env
     volumes:
       - wordpress_db:
+    networks:
+      - meine_net
 
   wordpress:
-    build: ./requirements/wordpress
+    build:
+      dockerfile: Dockerfile
+      context: ./requirements/wordpress/
     container_name: my_wordpress
     restart: always
     volumes:
       - wordpress_db:/var/www/html
+    networks:
+      - meine_net
+    depends_on:
+      - nginx
   
 
 volumes:
   db_data:
   wordpress_db:
+
+networks:
+  meine_net:
+    driver: bridge
