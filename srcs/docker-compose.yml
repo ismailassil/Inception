@@ -5,7 +5,8 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./requirements/mariadb/
-    container_name: my_mariadb
+    image: mariadb:iassil
+    container_name: my_mariadb:iassil
     restart: always
     ports:
       - "3306:3306"
@@ -20,6 +21,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./requirements/nginx/
+    image: nginx:iassil
     container_name: my_nginx
     restart: always
     depends_on:
@@ -37,6 +39,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./requirements/wordpress/
+    image: wordpress:iassil
     container_name: my_wordpress
     restart: always
     volumes:
@@ -49,8 +52,19 @@ services:
 volumes:
   db_data:
     name: "database_vol"
+    driver: local
+    driver_opts:
+      device: /home/${USER}/storage_vol/mariadb
+      o: bind
+      type: none
+
   wordpress_db:
     name: "wordpress_database"
+    driver: local
+    driver_opts:
+      device: /home/${USER}/storage_vol/wordpress_db
+      o: bind
+      type: none
 
 networks:
   meine_net:
