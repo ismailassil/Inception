@@ -1,16 +1,10 @@
 FROM debian:bullseye
 
-RUN apt-get update && apt-get upgrade -y	\
-	&& get-apt install -y	wget			\
-							unzip			\
-							curl			\
-							php				\
-							php8.1-fpm		\
-							php-mysql		\
-							mariadb-client	\
-							&& apt-get clean -y && apt-get autoremove -y
+RUN apt-get update && apt-get upgrade -y \
+	&& apt-get install -y unzip curl php php7.4-fpm php-mysql mariadb-client \
+	&& apt-get clean -y && apt-get autoremove -y
 
-RUN service restart php8.1-fpm
+RUN service php7.4-fpm restart
 
 COPY tools/wordpress_script.sh /wordpress_script.sh
 

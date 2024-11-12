@@ -21,11 +21,12 @@ chown -R www-data:www-data /var/www/html/
 ## -> Without the `wp-config.php` file their will be no configure
 mv wp-config-sample.php wp-config.php
 
-# Configure the WordPress before Installing it
+# Configure the WordPress with mariaDB
 wpcs SERVER_PORT 3306 --path=$WP_PATH
 wpcs DB_NAME $MYSQL_DB --path=$WP_PATH
 wpcs DB_USER $MYSQL_USER --path=$WP_PATH
 wpcs DB_PASSWORD $MYSQL_PASSWORD --path=$WP_PATH
+## Set the mariaDB Container exposed port with WordPress Database
 wpcs DB_HOST 'mariadb:3306' --path=$WP_PATH
 
 ## Installing WordPress

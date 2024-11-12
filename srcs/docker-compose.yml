@@ -22,12 +22,14 @@ services:
       context: ./requirements/nginx/
     container_name: my_nginx
     restart: always
+    depends_on:
+      - wordpress
     ports:
       - "8000:80"
     env_file:
       - .env
     volumes:
-      - wordpress_db:
+      - wordpress_db:/etc/nginx/ssl/
     networks:
       - meine_net
 
@@ -42,13 +44,15 @@ services:
     networks:
       - meine_net
     depends_on:
-      - nginx
-  
+      - mariadb
 
 volumes:
   db_data:
+    name: "database_vol"
   wordpress_db:
+    name: "wordpress_database"
 
 networks:
   meine_net:
+    name: "meine_net"
     driver: bridge
