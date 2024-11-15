@@ -1,15 +1,24 @@
 version: "3.8"
 
+## The Ports should only be exposed to other containers in the same network not the host
+
 services:
   mariadb:
     build:
-      dockerfile: Dockerfile
       context: ./requirements/mariadb/
+      dockerfile: Dockerfile
     image: mariadb:iassil
-    container_name: my_mariadb:iassil
+    container_name: my_mariadb
     restart: always
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
+    # ports:
+    #   - "3306:3306"
+    #   - target: 3306
+    #     published: 3306
+    #     protocol: tcp
+    #     mode: host
+    #   - "3306:3306"
     env_file:
       - .env
     volumes:
@@ -19,15 +28,23 @@ services:
 
   nginx:
     build:
-      dockerfile: Dockerfile
       context: ./requirements/nginx/
+      dockerfile: Dockerfile
     image: nginx:iassil
     container_name: my_nginx
     restart: always
     depends_on:
       - wordpress
     ports:
-      - "8000:80"
+      - "443:443"
+    # expose:
+    #   - "9000"
+    # ports:
+    #   - target: 80
+    #     published: 8000
+    #     protocol: tcp
+    #     mode: host
+    #   - "8000:80"
     env_file:
       - .env
     volumes:
@@ -37,11 +54,13 @@ services:
 
   wordpress:
     build:
-      dockerfile: Dockerfile
       context: ./requirements/wordpress/
+      dockerfile: Dockerfile
     image: wordpress:iassil
     container_name: my_wordpress
     restart: always
+    env_file:
+      - .env
     volumes:
       - wordpress_db:/var/www/html
     networks:
@@ -54,7 +73,7 @@ volumes:
     name: "database_vol"
     driver: local
     driver_opts:
-      device: /home/${USER}/storage_vol/mariadb
+      device: "/home/${USER}/data/mariadb"
       o: bind
       type: none
 
@@ -62,7 +81,7 @@ volumes:
     name: "wordpress_database"
     driver: local
     driver_opts:
-      device: /home/${USER}/storage_vol/wordpress_db
+      device: "/home/${USER}/data/wordpress_db"
       o: bind
       type: none
 
@@ -70,3 +89,4 @@ networks:
   meine_net:
     name: "meine_net"
     driver: bridge
+    # external: true

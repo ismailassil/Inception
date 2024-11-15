@@ -1,5 +1,5 @@
-DB_DIR_PATH	= "/home/${USER}/storage_vol/mariadb"
-WP_DIR_PATH	= "/home/${USER}/storage_vol/wordpress_db"
+DB_DIR_PATH	= "/home/${USER}/data/mariadb"
+WP_DIR_PATH	= "/home/${USER}/data/wordpress_db"
 DCK_PATH	= "./srcs/docker-compose.yml"
 
 DB_SRV		= mariadb
@@ -9,7 +9,7 @@ NG_SRV		= nginx
 all: help
 
 up: build
-	@docker compose up -d -f $(DCK_PATH) -p inception
+	@docker compose -f $(DCK_PATH) -p inception up
 
 down:
 	@docker compose -f $(DCK_PATH) down
@@ -34,7 +34,7 @@ wp:
 
 clean:
 	@rm -rf $(DB_DIR_PATH) $(WP_DIR_PATH)
-	@docker container rm $(docker ps -aq) -f -v
+	@docker container rm `docker ps -aq` -f -v
 	@docker volume prune -f
 
 prune: clean
