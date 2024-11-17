@@ -1,7 +1,8 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y \
-	&& apt-get install -y unzip curl php php7.4-fpm php-mysql mariadb-client \
+	&& apt-get install -y unzip vim curl php \
+	php7.4-fpm php-mysql mariadb-client netcat \
 	&& apt-get clean -y && apt-get autoremove -y
 
 RUN service php7.4-fpm start

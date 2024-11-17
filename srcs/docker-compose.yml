@@ -8,23 +8,20 @@ services:
       context: ./requirements/mariadb/
       dockerfile: Dockerfile
     image: mariadb:iassil
-    container_name: my_mariadb
+    container_name: mariadb
     restart: always
-    expose:
-      - "3306"
-    # ports:
-    #   - "3306:3306"
-    #   - target: 3306
-    #     published: 3306
-    #     protocol: tcp
-    #     mode: host
-    #   - "3306:3306"
     env_file:
       - .env
     volumes:
       - db_data:/var/lib/mysql
     networks:
       - meine_net
+    healthcheck:
+      test: ["CMD", "nc", "-zv", "mariadb", "3306"]
+      start_period: 5s
+      interval: 1s
+      timeout: 5s
+      retries: 10
 
   nginx:
     build:
@@ -32,25 +29,24 @@ services:
       dockerfile: Dockerfile
     image: nginx:iassil
     container_name: my_nginx
+    hostname: my_nginx
     restart: always
     depends_on:
-      - wordpress
+    - wordpress
     ports:
       - "443:443"
-    # expose:
-    #   - "9000"
-    # ports:
-    #   - target: 80
-    #     published: 8000
-    #     protocol: tcp
-    #     mode: host
-    #   - "8000:80"
     env_file:
       - .env
     volumes:
-      - wordpress_db:/etc/nginx/ssl/
+      - wordpress_db:/var/www/wordpress/
     networks:
       - meine_net
+    healthcheck:
+      test: ["CMD", "service", "nginx", "status"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
 
   wordpress:
     build:
@@ -58,15 +54,17 @@ services:
       dockerfile: Dockerfile
     image: wordpress:iassil
     container_name: my_wordpress
+    hostname: my_wordpress
     restart: always
     env_file:
       - .env
     volumes:
-      - wordpress_db:/var/www/html
+      - wordpress_db:/var/www/wordpress/
     networks:
       - meine_net
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
 
 volumes:
   db_data:
@@ -89,4 +87,3 @@ networks:
   meine_net:
     name: "meine_net"
     driver: bridge
-    # external: true

@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y	\
-	&& apt-get install nginx openssl -y		\
+	&& apt-get install nginx openssl vim netcat -y		\
 	&& apt-get clean -y && apt-get autoremove -y
 
 ## CREATE A DEFAULT SSL DIRECTORY TO STORE ALL THE FILES

@@ -32,17 +32,21 @@ ng:
 wp:
 	@docker container exec -it $(docker ps -q -f "name=$(WP_SRV)") bash
 
-clean:
-	@rm -rf $(DB_DIR_PATH) $(WP_DIR_PATH)
-	@docker container rm `docker ps -aq` -f -v
-	@docker volume prune -f
-
-prune: clean
-	@docker system prune --all --volumes --force
-
-
 mkdir:
 	@mkdir -p $(DB_DIR_PATH) $(WP_DIR_PATH)
+
+clean:
+	@docker stop `docker ps -qa` >/dev/null 2>&1 || true
+	@docker rm `docker ps -qa` -f  >/dev/null 2>&1  || true
+	@docker rmi -f `docker images -qa`  >/dev/null 2>&1  || true
+	@docker volume rm `docker volume ls -q` -f  >/dev/null 2>&1  || true
+	@docker network rm `docker network ls -q`  >/dev/null 2>&1  || true
+	@sudo rm -rf $(DB_DIR_PATH) $(WP_DIR_PATH)
+	@echo "$(YELLOW)[ ✓ ] Cleanup process complete!$(RESET)"
+
+prune: clean
+	@docker system prune --all --volumes --force >/dev/null 2>&1
+	@echo "$(YELLOW)[ ✓ ] System prune complete!$(RESET)"
 
 help:
 	@echo ""
@@ -79,5 +83,7 @@ help:
 .PHONY: all up down start stop mkdir clean prune re mdb ng wp help 
 
 PURPLE	= \033[0;35m
+GREEN=	\033[1;32m
+YELLOW=	\033[33m
 BOLD	= \033[1m
 END		= \033[0m
