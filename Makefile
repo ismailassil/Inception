@@ -18,6 +18,9 @@ down:
 build: mkdir
 	@docker compose -f $(DCK_PATH) build
 
+ps:
+	@docker compose -f $(DCK_PATH) ps
+
 start:
 	@docker compose -f $(DCK_PATH) start $(docker compose -f $(DCK_PATH) config --services)
 
@@ -70,6 +73,7 @@ help:
 	@echo "\tup\tBuild and run all services"
 	@echo "\tdown\tStop and remove containers and networks"
 	@echo "\tbuild\tBuild or rebuild services"
+	@echo "\tps\tList containers"
 	@echo "\tstart\tStart services"
 	@echo "\tstop\tStop services"
 	@echo "\tmkdir\tCreate folders for the MariaDB and WordPress databases"
