@@ -15,7 +15,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - meine_net
+      - phantom_net
     healthcheck:
       test: ["CMD", "nc", "-zv", "mariadb", "3306"]
       start_period: 5s
@@ -28,8 +28,8 @@ services:
       context: ./requirements/nginx/
       dockerfile: Dockerfile
     image: nginx:iassil
-    container_name: my_nginx
-    hostname: my_nginx
+    container_name: nginx
+    hostname: nginx
     restart: always
     depends_on:
     - wordpress
@@ -40,7 +40,7 @@ services:
     volumes:
       - wordpress_db:/var/www/wordpress/
     networks:
-      - meine_net
+      - phantom_net
     healthcheck:
       test: ["CMD", "service", "nginx", "status"]
       interval: 1s
@@ -53,18 +53,62 @@ services:
       context: ./requirements/wordpress/
       dockerfile: Dockerfile
     image: wordpress:iassil
-    container_name: my_wordpress
-    hostname: my_wordpress
+    container_name: wordpress
+    hostname: wordpress
     restart: always
     env_file:
       - .env
     volumes:
       - wordpress_db:/var/www/wordpress/
     networks:
-      - meine_net
+      - phantom_net
     depends_on:
       mariadb:
         condition: service_healthy
+
+  adminer:
+    build:
+      context: ./requirements/bonus/adminer/
+      dockerfile: Dockerfile
+    image: adminer:iassil
+    container_name: adminer
+    hostname: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    networks:
+      - phantom_net
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  redis:
+    build:
+      context: ./requirements/bonus/redis
+      dockerfile: Dockerfile
+    image: redis:iassil
+    container_name: redis
+    hostname: redis
+    restart: always
+    # ports:
+    #   - "6379:6379"
+    env_file:
+      - .env
+    networks:
+      - phantom_net
+    volumes:
+      - redis_db:/data
+    privileged: true
+    healthcheck:
+      test: ["CMD", "redis-cli", "-h", "localhost", "ping"]
+      start_period: 5s
+      interval: 1s
+      timeout: 5s
+      retries: 10
 
 volumes:
   db_data:
@@ -83,7 +127,15 @@ volumes:
       o: bind
       type: none
 
+  redis_db:
+    name: "redis_memory"
+    driver: local
+    driver_opts:
+      device: "/home/${USER}/data/redis_memory"
+      o: bind
+      type: none
+
 networks:
-  meine_net:
-    name: "meine_net"
+  phantom_net:
+    name: "phantom_net"
     driver: bridge

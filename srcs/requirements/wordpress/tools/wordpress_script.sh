@@ -5,7 +5,7 @@ RED='\033[0;31m'
 RESET='\033[0m'
 
 # Install the WordPressCLI
-curl -O -sS https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar > /tmp/wordpressCli \
+curl -O -sS https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar > /dev/null 2>&1 \
 	&& echo -e "${GREEN}[✓] WordPress CLI downloaded successfully!${RESET}"
 
 ## Change the permissions of wp-cli.phar and move it to /usr/local/bin/wp
@@ -51,17 +51,18 @@ wp config set DB_PASSWORD $MYSQL_PASSWORD --path="$WP_PATH" --allow-root \
 wp config set DB_HOST "$__MYSQL_HOST__" --path="$WP_PATH" --allow-root \
 	&& echo -e "${GREEN}[✓] Set DB_HOST in wp-config.php.${RESET}"
 
+## REDIS CONFIGURATION
+wp config set WP_REDIS_HOST "redis" --path="$WP_PATH" --allow-root \
+	&& echo -e "${GREEN}[✓] Set WP_REDIS_HOST in wp-config.php.${RESET}"
+wp config set WP_REDIS_PORT "6379" --type=constant --path="$WP_PATH" --allow-root \
+	&& echo -e "${GREEN}[✓] Set WP_REDIS_PORT in wp-config.php.${RESET}"
+
 ## Installing WordPress
-## TO BE CHECKED !!!!
-# if ! wp core is-installed --path="$WP_PATH" --allow-root; then
 wp core install	--url=$DOMAINE_NAME --title=$TITLE \
 				--admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD \
 				--admin_email=$WP_ADMIN_EMAIL --path="$WP_PATH" --allow-root \
 	&& echo -e "${GREEN}[✓] WordPress installed successfully!${RESET}" \
 	|| echo -e "${RED}[X] Failed to create new WordPress user '$WP_USER'.${RESET}"
-# else
-# 	echo -e "${GREEN}[✓] WordPress is already installed.${RESET}"
-# fi
 
 ### Adding a new user to WordPress
 wp user create	$WP_USER $WP_USER_EMAIL --role=$WP_USER_ROLE \
@@ -76,6 +77,12 @@ chown -R www-data:www-data "$WP_PATH" \
 # Installing new theme and activating it
 wp theme install twentytwentytwo --activate --path="$WP_PATH" --allow-root \
 	&& echo -e "${GREEN}[✓] 'twentytwentytwo' theme installed and activated successfully!${RESET}"
+
+wp plugin install redis-cache --activate --path="$WP_PATH" --allow-root \
+	&& echo -e "${GREEN}[✓] 'redis-cache' plugin installed and activated successfully!${RESET}"
+
+wp redis enable redis-cache --path="$WP_PATH" --allow-root \
+	&& echo -e "${GREEN}[✓] 'redis-cache' plugin activated successfully!${RESET}"
 
 #############
 ## Start the PHP FastCGI Process Manager in the foreground (-F)

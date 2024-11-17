@@ -1,5 +1,6 @@
 DB_DIR_PATH	= "/home/${USER}/data/mariadb"
 WP_DIR_PATH	= "/home/${USER}/data/wordpress_db"
+RD_DIR_PATH	= "/home/${USER}/data/redis_memory"
 DCK_PATH	= "./srcs/docker-compose.yml"
 
 DB_SRV		= mariadb
@@ -33,15 +34,15 @@ wp:
 	@docker container exec -it $(docker ps -q -f "name=$(WP_SRV)") bash
 
 mkdir:
-	@mkdir -p $(DB_DIR_PATH) $(WP_DIR_PATH)
+	@mkdir -p $(DB_DIR_PATH) $(WP_DIR_PATH) $(RD_DIR_PATH)
 
 clean:
 	@docker stop `docker ps -qa` >/dev/null 2>&1 || true
-	@docker rm `docker ps -qa` -f  >/dev/null 2>&1  || true
-	@docker rmi -f `docker images -qa`  >/dev/null 2>&1  || true
-	@docker volume rm `docker volume ls -q` -f  >/dev/null 2>&1  || true
-	@docker network rm `docker network ls -q`  >/dev/null 2>&1  || true
-	@sudo rm -rf $(DB_DIR_PATH) $(WP_DIR_PATH)
+	@docker rm `docker ps -qa` -f  >/dev/null 2>&1 || true
+	@docker rmi -f `docker images -qa`  >/dev/null 2>&1 || true
+	@docker volume rm `docker volume ls -q` -f  >/dev/null 2>&1 || true
+	@docker network rm `docker network ls -q`  >/dev/null 2>&1 || true
+	@sudo rm -rf $(DB_DIR_PATH) $(WP_DIR_PATH) $(RD_DIR_PATH)
 	@echo "$(YELLOW)[ ✓ ] Cleanup process complete!$(RESET)"
 
 prune: clean
