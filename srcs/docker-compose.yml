@@ -1,7 +1,8 @@
 version: "3.8"
 
-## The Ports should only be exposed to other containers in the same network not the host
-
+########################
+####    SERVICES    ####
+########################
 services:
   mariadb:
     build:
@@ -13,7 +14,7 @@ services:
     env_file:
       - .env
     volumes:
-      - db_data:/var/lib/mysql
+      - data_vol:/var/lib/mysql
     networks:
       - phantom_net
     healthcheck:
@@ -38,7 +39,7 @@ services:
     env_file:
       - .env
     volumes:
-      - wordpress_db:/var/www/wordpress/
+      - wordpress_vol:/var/www/wordpress/
     networks:
       - phantom_net
     healthcheck:
@@ -59,7 +60,7 @@ services:
     env_file:
       - .env
     volumes:
-      - wordpress_db:/var/www/wordpress/
+      - wordpress_vol:/var/www/wordpress/
     networks:
       - phantom_net
     depends_on:
@@ -94,8 +95,6 @@ services:
     container_name: redis
     hostname: redis
     restart: always
-    # ports:
-    #   - "6379:6379"
     env_file:
       - .env
     networks:
@@ -110,8 +109,42 @@ services:
       timeout: 5s
       retries: 10
 
+  static_website:
+    build:
+      context: ./requirements/bonus/static_website
+      dockerfile: Dockerfile
+    image: static:iassil
+    container_name: static_website
+    hostname: static_website
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - phantom_net
+
+  ftp_service:
+    build:
+      context: ./requirements/bonus/ftp
+      dockerfile: Dockerfile
+    image: ftp:iassil
+    container_name: ftp
+    hostname: ftp
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    networks:
+      - phantom_net
+    volumes:
+      - wordpress_vol:/data/wordpress_files/
+
+########################
+####    VOLUMES     ####
+########################
 volumes:
-  db_data:
+  data_vol:
     name: "database_vol"
     driver: local
     driver_opts:
@@ -119,22 +152,25 @@ volumes:
       o: bind
       type: none
 
-  wordpress_db:
-    name: "wordpress_database"
+  wordpress_vol:
+    name: "wordpress_database_vol"
     driver: local
     driver_opts:
-      device: "/home/${USER}/data/wordpress_db"
+      device: "/home/${USER}/data/wordpress"
       o: bind
       type: none
 
   redis_db:
-    name: "redis_memory"
+    name: "redis_memory_vol"
     driver: local
     driver_opts:
-      device: "/home/${USER}/data/redis_memory"
+      device: "/home/${USER}/data/redis"
       o: bind
       type: none
 
+########################
+####    NETWORK     ####
+########################
 networks:
   phantom_net:
     name: "phantom_net"

@@ -1,6 +1,6 @@
 DB_DIR_PATH	= "/home/${USER}/data/mariadb"
-WP_DIR_PATH	= "/home/${USER}/data/wordpress_db"
-RD_DIR_PATH	= "/home/${USER}/data/redis_memory"
+WP_DIR_PATH	= "/home/${USER}/data/wordpress"
+RD_DIR_PATH	= "/home/${USER}/data/redis"
 DCK_PATH	= "./srcs/docker-compose.yml"
 
 DB_SRV		= mariadb

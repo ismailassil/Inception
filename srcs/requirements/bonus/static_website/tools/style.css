@@ -1,0 +1,91 @@
+html {
+	font-family: "Host Grotesk", sans-serif;
+	background-color: black;
+	color: white;
+	background-size: 40px 40px;
+	background-image: linear-gradient(
+			to right,
+			rgba(128, 128, 128, 0.605) 0.5px,
+			transparent 0.5px
+		),
+		linear-gradient(
+			to bottom,
+			rgba(128, 128, 128, 0.605) 0.5px,
+			transparent 0.5px
+		);
+}
+
+body {
+	margin: 0 200px;
+	padding-bottom: 120px;
+}
+
+.ListNavBar li a {
+	text-decoration: none;
+	color: white;
+}
+
+li {
+	display: inline-block;
+	list-style: none;
+	padding: 30px;
+}
+
+.divNavBar {
+	max-width: fit-content;
+	margin: 0 auto;
+}
+
+.name {
+	margin-top: 120px;
+	font-family: "Martian Mono", monospace;
+}
+
+.japonaise_name {
+	font-size: 80px;
+	font-family: "Shizuru", "Host Grotesk", sans-serif;
+	margin-top: 20px;
+	color: #e47022;
+}
+
+p {
+	font-size: 40px;
+	padding: 0;
+	margin: 0;
+}
+
+.title {
+	color: #a03de7;
+	font-size: 40px;
+	margin-top: 90px;
+}
+
+.description {
+	font-size: 30px;
+	font-weight: 100;
+}
+
+.reachMe {
+	margin-top: 60px;
+	font-size: 30px;
+	font-weight: 600;
+}
+
+.contacts {
+	font-size: 24px;
+}
+
+.contacts li b {
+	color: #e47022;
+}
+
+.contacts li {
+	padding: 5px 0 0 0;
+	list-style: none;
+	margin: 0;
+}
+
+.reachMe {
+	color: #eda274;
+	margin-bottom: 50px;
+}

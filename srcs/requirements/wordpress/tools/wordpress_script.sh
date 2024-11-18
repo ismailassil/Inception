@@ -62,13 +62,13 @@ wp core install	--url=$DOMAINE_NAME --title=$TITLE \
 				--admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD \
 				--admin_email=$WP_ADMIN_EMAIL --path="$WP_PATH" --allow-root \
 	&& echo -e "${GREEN}[✓] WordPress installed successfully!${RESET}" \
-	|| echo -e "${RED}[X] Failed to create new WordPress user '$WP_USER'.${RESET}"
+	|| echo -e "${RED}[~] Failed to create new WordPress user '$WP_USER'.${RESET}"
 
 ### Adding a new user to WordPress
 wp user create	$WP_USER $WP_USER_EMAIL --role=$WP_USER_ROLE \
 				--user_pass=$WP_USER_PASSWORD --path="$WP_PATH" --allow-root \
 	&& echo -e "${GREEN}[✓] New WordPress user '$WP_USER' created successfully!${RESET}" \
-	|| echo -e "${RED}[X] Failed to create new WordPress user '$WP_USER'.${RESET}"
+	|| echo -e "${RED}[~] Failed to create new WordPress user '$WP_USER'.${RESET}"
 
 # Correct ownership of the WordPress directory for web server access
 chown -R www-data:www-data "$WP_PATH" \
