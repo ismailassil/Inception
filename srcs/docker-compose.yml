@@ -140,6 +140,28 @@ services:
     volumes:
       - wordpress_vol:/data/wordpress_files/
 
+  cadvisor:
+    build:
+      context: ./requirements/bonus/cAdvisor
+      dockerfile: Dockerfile
+    image: cadvisor:iassil
+    container_name: cadvisor
+    hostname: cadvisor
+    restart: always
+    ports:
+      - "7000:7000"
+    networks:
+      - phantom_net
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/snap/docker/common/var-lib-docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    privileged: true
+    devices:
+      - "/dev/kmsg:/dev/kmsg"
+
 ########################
 ####    VOLUMES     ####
 ########################
