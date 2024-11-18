@@ -154,13 +154,13 @@ services:
       - phantom_net
     volumes:
       - /:/rootfs:ro
-      - /var/run:/var/run:ro
+      - /var/run:/var/run:ro # For accessing docker sockets
       - /sys:/sys:ro
-      - /var/snap/docker/common/var-lib-docker/:/var/lib/docker:ro
+      - /var/snap/docker/common/var-lib-docker/:/var/lib/docker:ro # For Docker Data
       - /dev/disk/:/dev/disk:ro
     privileged: true
     devices:
-      - "/dev/kmsg:/dev/kmsg"
+      - "/dev/kmsg:/dev/kmsg" # read kernel messages for system-level monitoring
 
 ########################
 ####    VOLUMES     ####

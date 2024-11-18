@@ -8,4 +8,4 @@ RUN wget https://github.com/google/cadvisor/releases/download/v0.47.2/cadvisor-v
 
 RUN chmod +x /usr/local/bin/cadvisor
 
-CMD ["/usr/local/bin/cadvisor", "--port=7000", "--docker_only=true"]
+ENTRYPOINT [ "/usr/local/bin/cadvisor", "--port=7000" ]
