@@ -2,7 +2,7 @@ FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y \
 	&& apt-get install -y redis vim netcat curl procps \
-	&& apt-get clean -y && apt-get autoremove -y
+	&& rm -rf /var/lib/apt/lists/*
 
 COPY ./tools/redis_script.sh /redis_script.sh
 

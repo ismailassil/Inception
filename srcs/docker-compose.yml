@@ -84,8 +84,6 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
-      redis:
-        condition: service_healthy
 
   redis:
     build:
@@ -102,12 +100,6 @@ services:
     volumes:
       - redis_db:/data
     privileged: true
-    healthcheck:
-      test: ["CMD", "redis-cli", "-h", "localhost", "ping"]
-      start_period: 5s
-      interval: 1s
-      timeout: 5s
-      retries: 10
 
   static_website:
     build:

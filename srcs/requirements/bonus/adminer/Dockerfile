@@ -2,7 +2,7 @@ FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y \
 	&& apt-get install -y curl vim netcat adminer \
-	&& apt-get clean -y && apt-get autoremove -y
+	&& rm -rf /var/lib/apt/lists/*
 
 RUN mv /usr/share/adminer/adminer.php /usr/share/adminer/index.php
 

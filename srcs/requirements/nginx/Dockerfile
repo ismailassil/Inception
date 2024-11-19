@@ -2,9 +2,8 @@ FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y	\
 	&& apt-get install nginx openssl vim netcat -y		\
-	&& apt-get clean -y && apt-get autoremove -y
+	&& rm -rf /var/lib/apt/lists/*
 
-## CREATE A DEFAULT SSL DIRECTORY TO STORE ALL THE FILES
 RUN mkdir -p /etc/nginx/ssl
 
 RUN openssl req -x509 -new -newkey rsa:4096 -nodes	\
