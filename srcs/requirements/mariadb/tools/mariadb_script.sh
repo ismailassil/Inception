@@ -12,8 +12,8 @@ mariadb -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PA
 mariadb -e "GRANT ALL PRIVILEGES ON $MYSQL_DB.* TO '$MYSQL_USER'@'%'"
 mariadb -e "FLUSH PRIVILEGES"
 
-mysqladmin -u root -p$MYSQL_ROOT_PASSWORD shutdown \
+mysqladmin -u root -p$MYSQL_ROOT_PASSWORD shutdown
 
 ##############################################################################
 echo -e "${GREEN}[✓] MySQL started in safe mode, bound to 0.0.0.0.${RESET}"
-exec mysqld_safe --port=3306 --bind_address=0.0.0.0 --datadir="/var/lib/mysql"
+exec mysqld_safe --bind_address=0.0.0.0
