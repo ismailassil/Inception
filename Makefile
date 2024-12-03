@@ -3,6 +3,8 @@ WP_DIR_PATH	= "/home/${USER}/data/wordpress"
 RD_DIR_PATH	= "/home/${USER}/data/redis"
 DCK_PATH	= "./srcs/docker-compose.yml"
 
+DCK_NAME=inception
+
 DB_SRV		= mariadb
 WP_SRV		= wordpress
 NG_SRV		= nginx
@@ -15,22 +17,25 @@ ST_SRV		= static_website
 all: help
 
 up: clean build
-	@docker compose -f $(DCK_PATH) -p inception up
+	@docker compose -f $(DCK_PATH) -p $(DCK_NAME) up
 
 down:
-	@docker compose -f $(DCK_PATH) down
+	@docker compose -p $(DCK_NAME) down
 
 build: mkdir
 	@docker compose -f $(DCK_PATH) build
 
 ps:
-	@docker compose -f $(DCK_PATH) ps
+	@docker ps
 
 start:
-	@docker compose -f $(DCK_PATH) start $(docker compose -f $(DCK_PATH) config --services)
+	@docker compose -p $(DCK_NAME) start `docker compose -f $(DCK_PATH) config --services`
 
 stop:
-	@docker compose -f $(DCK_PATH) stop $(docker compose -f $(DCK_PATH) config --services)
+	@docker compose -p $(DCK_NAME) stop `docker compose -f $(DCK_PATH) config --services`
+
+logs:
+	@docker compose -p $(DCK_NAME) logs
 
 mariadb:
 	@docker container exec -it `docker ps -q -f "name=$(DB_SRV)"` bash
@@ -96,6 +101,7 @@ help:
 	@echo "\tps\t\tList containers"
 	@echo "\tstart\t\tStart services"
 	@echo "\tstop\t\tStop services"
+	@echo "\tlogs\t\tShow logs of the running containers"
 	@echo "\tmkdir\t\tCreate folders for the MariaDB and WordPress databases"
 	@echo "\tclean\t\tClean up containers (force clean if a container is running)"
 	@echo "\tprune\t\tClean up images and containers"

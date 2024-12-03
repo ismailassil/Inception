@@ -97,9 +97,6 @@ services:
       - .env
     networks:
       - phantom_net
-    volumes:
-      - redis_db:/data
-    privileged: true
 
   static_website:
     build:
@@ -119,8 +116,8 @@ services:
       context: ./requirements/bonus/ftp
       dockerfile: Dockerfile
     image: ftp:iassil
-    container_name: ftp
-    hostname: ftp
+    container_name: my_ftp
+    hostname: my_ftp
     restart: always
     env_file:
       - .env
@@ -171,14 +168,6 @@ volumes:
     driver: local
     driver_opts:
       device: "/home/${USER}/data/wordpress"
-      o: bind
-      type: none
-
-  redis_db:
-    name: "redis_memory_vol"
-    driver: local
-    driver_opts:
-      device: "/home/${USER}/data/redis"
       o: bind
       type: none
 
