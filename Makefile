@@ -3,7 +3,10 @@ WP_DIR_PATH	= "/home/${USER}/data/wordpress"
 RD_DIR_PATH	= "/home/${USER}/data/redis"
 DCK_PATH	= "./srcs/docker-compose.yml"
 
-DCK_NAME=inception
+DCK_NAME	=	inception
+NET_NAME	=	phantom_net
+VOL_NAME_1	=	database_vol
+VOL_NAME_2	=	wordpress_database_vol
 
 DB_SRV		= mariadb
 WP_SRV		= wordpress
@@ -65,16 +68,16 @@ mkdir:
 	@mkdir -p $(DB_DIR_PATH) $(WP_DIR_PATH) $(RD_DIR_PATH)
 
 clean:
-	@docker stop `docker ps -qa` >/dev/null 2>&1 || true
-	@docker rm `docker ps -qa` -f  >/dev/null 2>&1 || true
-	@docker rmi -f `docker images -qa`  >/dev/null 2>&1 || true
-	@docker volume rm `docker volume ls -q` -f  >/dev/null 2>&1 || true
-	@docker network rm `docker network ls -q`  >/dev/null 2>&1 || true
+	@docker stop `docker compose -p $(DCK_NAME) ps -q` >/dev/null 2>&1 || true
+	@docker rm `docker compose -p $(DCK_NAME) ps -qa` -f  >/dev/null 2>&1 || true
+	@docker rmi `docker images -q` -f >/dev/null 2>&1 || true
+	@docker volume rm `docker volume ls -q -f "name=$(VOL_NAME_1)"  -f "name=$(VOL_NAME_2)"` -f >/dev/null 2>&1 || true
+	@docker network rm `docker network ls -q -f "name=$(NET_NAME)"` >/dev/null 2>&1 || true
 	@sudo rm -rf $(DB_DIR_PATH) $(WP_DIR_PATH) $(RD_DIR_PATH)
 	@echo "$(YELLOW)[ ✓ ] Cleanup process complete!$(RESET)"
 
 prune: clean
-	@docker system prune --all --volumes --force >/dev/null 2>&1
+	@docker system prune --all --volumes --force 
 	@echo "$(YELLOW)[ ✓ ] System prune complete!$(RESET)"
 
 help:
@@ -118,8 +121,8 @@ help:
 
 .PHONY: all up down start stop mkdir clean prune re mdb ng wp help 
 
-PURPLE	= \033[0;35m
-GREEN=	\033[1;32m
-YELLOW=	\033[33m
+PURPLE	= \033[1;35m
+GREEN	= \033[1;32m
+YELLOW	= \033[1;33m
 BOLD	= \033[1m
 END		= \033[0m
