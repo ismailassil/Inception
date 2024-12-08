@@ -1,6 +1,7 @@
 DB_DIR_PATH	= "/home/${USER}/data/mariadb"
 WP_DIR_PATH	= "/home/${USER}/data/wordpress"
 RD_DIR_PATH	= "/home/${USER}/data/redis"
+ROOT_DIR	= "/home/$(USER)/data"
 DCK_PATH	= "./srcs/docker-compose.yml"
 
 DCK_NAME	=	inception
@@ -73,11 +74,11 @@ clean:
 	@docker rmi `docker images -q` -f >/dev/null 2>&1 || true
 	@docker volume rm `docker volume ls -q -f "name=$(VOL_NAME_1)"  -f "name=$(VOL_NAME_2)"` -f >/dev/null 2>&1 || true
 	@docker network rm `docker network ls -q -f "name=$(NET_NAME)"` >/dev/null 2>&1 || true
-	@sudo rm -rf $(DB_DIR_PATH) $(WP_DIR_PATH) $(RD_DIR_PATH)
+	@sudo rm -rf $(ROOT_DIR)
 	@echo "$(YELLOW)[ ✓ ] Cleanup process complete!$(RESET)"
 
 prune: clean
-	@docker system prune --all --volumes --force 
+	@docker system prune --all --volumes --force 1>/dev/null 2>&1
 	@echo "$(YELLOW)[ ✓ ] System prune complete!$(RESET)"
 
 help:
@@ -108,7 +109,6 @@ help:
 	@echo "\tmkdir\t\tCreate folders for the MariaDB and WordPress databases"
 	@echo "\tclean\t\tClean up containers (force clean if a container is running)"
 	@echo "\tprune\t\tClean up images and containers"
-	@echo "\tre\t\tRebuild images and start containers from scratch"
 	@echo "\tmariadb\t\tStart the MariaDB container in interactive mode"
 	@echo "\tnginx\t\tStart the NGINX container in interactive mode"
 	@echo "\twordpress\tStart the WordPress container in interactive mode"

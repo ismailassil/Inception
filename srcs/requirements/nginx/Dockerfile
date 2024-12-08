@@ -10,7 +10,7 @@ RUN openssl req -x509 -new -newkey rsa:4096 -nodes	\
 				-keyout /etc/nginx/ssl/cert.key		\
 				-out /etc/nginx/ssl/cert.crt		\
 				-sha256 -days 365					\
-				-subj "/C=MA/ST=KH/L=KH/O=SELF/OU=IT/CN=iassil.42.f"
+				-subj "/C=MA/ST=KH/L=KH/O=SELF/OU=IT/CN=iassil.42.fr"
 
 COPY tools/nginx.conf /etc/nginx/nginx.conf
 

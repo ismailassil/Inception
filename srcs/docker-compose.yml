@@ -10,6 +10,7 @@ services:
       dockerfile: Dockerfile
     image: mariadb:iassil
     container_name: mariadb
+    hostname: mariadb
     restart: always
     env_file:
       - .env

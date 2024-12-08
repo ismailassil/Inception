@@ -40,4 +40,4 @@ wp redis enable redis-cache --path="$WP_PATH" --allow-root
 
 ####################################################
 echo -e "${GREEN}[✓] Starting PHP-FPM.${RESET}"
-/usr/sbin/php-fpm7.4 -F
+exec /usr/sbin/php-fpm7.4 -F
