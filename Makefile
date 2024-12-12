@@ -30,7 +30,7 @@ build: mkdir
 	@docker compose -f $(DCK_PATH) build
 
 ps:
-	@docker ps
+	@docker compose -p $(DCK_NAME) ps
 
 start:
 	@docker compose -p $(DCK_NAME) start `docker compose -f $(DCK_PATH) config --services`
