@@ -12,8 +12,7 @@ echo "$FTP_USERNAME:$FTP_PASSWORD" | chpasswd
 
 FTP_FOLDER="/data/wordpress_files/"
 
-mkdir -p $FTP_FOLDER \
-	&& chown $FTP_USERNAME:$FTP_USERNAME $FTP_FOLDER \
+chown $FTP_USERNAME:$FTP_USERNAME $FTP_FOLDER \
 	&& chmod 755 $FTP_FOLDER
 
 ####################################################
