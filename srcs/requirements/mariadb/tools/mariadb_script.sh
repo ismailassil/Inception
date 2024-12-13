@@ -2,6 +2,8 @@
 
 GREEN='\033[1;32m'
 RESET='\033[0m'
+MYSQL_PASSWORD=`cat /run/secrets/db_password`
+MYSQL_ROOT_PASSWORD=`cat /run/secrets/db_root_password`
 
 service mariadb start
 

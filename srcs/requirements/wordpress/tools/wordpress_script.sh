@@ -2,6 +2,9 @@
 
 GREEN='\033[1;32m'
 RESET='\033[0m'
+MYSQL_PASSWORD=`cat /run/secrets/db_password`
+WP_USER_PASSWORD=`cat /run/secrets/wp_password`
+WP_ADMIN_PASSWORD=`cat /run/secrets/wp_admin_password`
 
 curl -O -s https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar >/dev/null 2>&1
 
