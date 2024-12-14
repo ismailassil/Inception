@@ -13,7 +13,7 @@ echo "$FTP_USERNAME:$FTP_PASSWORD" | chpasswd
 FTP_FOLDER="/data/wordpress_files/"
 
 chown $FTP_USERNAME:$FTP_USERNAME $FTP_FOLDER \
-	&& chmod 755 $FTP_FOLDER
+	&& chmod 777 $FTP_FOLDER
 
 ####################################################
 echo -e "${GREEN}[✓] Starting FTP.${RESET}"

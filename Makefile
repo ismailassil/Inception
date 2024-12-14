@@ -67,6 +67,10 @@ cadvisor:
 website:
 	@docker container exec -it `docker ps -q -f "name=$(ST_SRV)"` bash
 
+ip:
+	@docker inspect --format='{{range .NetworkSettings.Networks}}{{println .IPAddress}}{{end}}' \
+		`docker ps -q -f "name=$(FT_SRV)"`
+
 mkdir:
 	@mkdir -p $(DB_DIR_PATH) $(WP_DIR_PATH) $(RD_DIR_PATH)
 
