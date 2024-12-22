@@ -1,10 +1,10 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y \
-	&& apt-get install -y php \
+	&& apt-get install -y python3 \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY ./tools/index.html /portfolio/index.html
 COPY ./tools/style.css /portfolio/style.css
 
-ENTRYPOINT [ "php", "-S", "0.0.0.0:3000", "-t", "/portfolio/" ]
+ENTRYPOINT [ "python3", "http.server", "3000", "--directory", "/portfolio/" ]
