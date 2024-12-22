@@ -7,4 +7,4 @@ RUN apt-get update && apt-get upgrade -y \
 COPY ./tools/index.html /portfolio/index.html
 COPY ./tools/style.css /portfolio/style.css
 
-ENTRYPOINT [ "python3", "http.server", "3000", "--directory", "/portfolio/" ]
+ENTRYPOINT [ "python3", "-m", "http.server", "3000", "--directory", "/portfolio/" ]
