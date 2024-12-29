@@ -20,7 +20,7 @@ ST_SRV		= static_website
 
 all: help
 
-up: clean build
+up: build
 	@docker compose -f $(DCK_PATH) -p $(DCK_NAME) up
 
 down:

@@ -12,6 +12,6 @@ RUN openssl req -x509 -new -newkey rsa:4096 -nodes	\
 				-sha256 -days 365					\
 				-subj "/C=MA/ST=KH/L=KH/O=SELF/OU=IT/CN=iassil.42.fr"
 
-COPY tools/nginx.conf /etc/nginx/nginx.conf
+COPY tools/nginx.conf /etc/nginx/conf.d/my.conf
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

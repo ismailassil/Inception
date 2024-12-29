@@ -110,7 +110,7 @@ services:
     build:
       context: ./requirements/bonus/static_website
       dockerfile: Dockerfile
-    image: static:iassil
+    image: static_website:iassil
     container_name: static_website
     hostname: static_website
     restart: always
@@ -123,7 +123,7 @@ services:
     build:
       context: ./requirements/bonus/ftp
       dockerfile: Dockerfile
-    image: ftp:iassil
+    image: ftp_service:iassil
     container_name: my_ftp
     hostname: my_ftp
     restart: always
