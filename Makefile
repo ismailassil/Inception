@@ -24,11 +24,9 @@ up: build
 	@docker compose -f $(DCK_PATH) -p $(DCK_NAME) up
 
 down:
-	@docker swarm leave --force >/dev/null 2>&1 || true
 	@docker compose -p $(DCK_NAME) down
 
 build: mkdir
-	@docker swarm init >/dev/null
 	@docker compose -f $(DCK_PATH) build
 
 ps:
@@ -75,7 +73,6 @@ mkdir:
 	@mkdir -p $(DB_DIR_PATH) $(WP_DIR_PATH) $(RD_DIR_PATH)
 
 clean:
-	@docker swarm leave --force >/dev/null 2>&1 || true
 	@docker stop `docker compose -p $(DCK_NAME) ps -q` >/dev/null 2>&1 || true
 	@docker rm `docker compose -p $(DCK_NAME) ps -qa` -f  >/dev/null 2>&1 || true
 	@docker rmi `docker images -q` -f >/dev/null 2>&1 || true
