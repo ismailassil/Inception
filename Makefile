@@ -85,19 +85,30 @@ prune: clean
 	@docker system prune --all --volumes --force 1>/dev/null 2>&1
 	@echo "$(YELLOW)[ ✓ ] System prune complete!$(RESET)"
 
+#######################
+TERM_WIDTH := $(shell tput cols)
+
+PADDING := $(shell expr $(TERM_WIDTH) - 74)
+ifeq ($(shell test $(PADDING) -lt 0; echo $$?),0)
+    PADDING := 0
+endif
+PADDING := $(shell expr $(PADDING) / 2)
+PAD := $(shell printf '%*s' $(PADDING) '')
+#######################
+
 help:
 	@echo ""
 	@echo ""
-	@echo "$(PURPLE)\t ██▓ ███▄    █  ▄████▄  ▓█████  ██▓███  ▄▄▄█████▓ ██▓ ▒█████   ███▄    █ $(END)"
-	@echo "$(PURPLE)\t▓██▒ ██ ▀█   █ ▒██▀ ▀█  ▓█   ▀ ▓██░  ██▒▓  ██▒ ▓▒▓██▒▒██▒  ██▒ ██ ▀█   █ $(END)"
-	@echo "$(PURPLE)\t▒██▒▓██  ▀█ ██▒▒▓█    ▄ ▒███   ▓██░ ██▓▒▒ ▓██░ ▒░▒██▒▒██░  ██▒▓██  ▀█ ██▒$(END)"
-	@echo "$(PURPLE)\t░██░▓██▒  ▐▌██▒▒▓▓▄ ▄██▒▒▓█  ▄ ▒██▄█▓▒ ▒░ ▓██▓ ░ ░██░▒██   ██░▓██▒  ▐▌██▒$(END)"
-	@echo "$(PURPLE)\t░██░▒██░   ▓██░▒ ▓███▀ ░░▒████▒▒██▒ ░  ░  ▒██▒ ░ ░██░░ ████▓▒░▒██░   ▓██░$(END)"
-	@echo "$(PURPLE)\t░▓  ░ ▒░   ▒ ▒ ░ ░▒ ▒  ░░░ ▒░ ░▒▓▒░ ░  ░  ▒ ░░   ░▓  ░ ▒░▒░▒░ ░ ▒░   ▒ ▒ $(END)"
-	@echo "$(PURPLE)\t ▒ ░░ ░░   ░ ▒░  ░  ▒    ░ ░  ░░▒ ░         ░     ▒ ░  ░ ▒ ▒░ ░ ░░   ░ ▒░$(END)"
-	@echo "$(PURPLE)\t ▒ ░   ░   ░ ░ ░           ░   ░░         ░       ▒ ░░ ░ ░ ▒     ░   ░ ░ $(END)"
-	@echo "$(PURPLE)\t ░           ░ ░ ░         ░  ░                   ░      ░ ░           ░ $(END)"
-	@echo "$(PURPLE)\t               ░                                                         $(END)"
+	@echo "$(PAD)$(PURPLE)\t ██▓ ███▄    █  ▄████▄  ▓█████  ██▓███  ▄▄▄█████▓ ██▓ ▒█████   ███▄    █ $(END)"
+	@echo "$(PAD)$(PURPLE)\t▓██▒ ██ ▀█   █ ▒██▀ ▀█  ▓█   ▀ ▓██░  ██▒▓  ██▒ ▓▒▓██▒▒██▒  ██▒ ██ ▀█   █ $(END)"
+	@echo "$(PAD)$(PURPLE)\t▒██▒▓██  ▀█ ██▒▒▓█    ▄ ▒███   ▓██░ ██▓▒▒ ▓██░ ▒░▒██▒▒██░  ██▒▓██  ▀█ ██▒$(END)"
+	@echo "$(PAD)$(PURPLE)\t░██░▓██▒  ▐▌██▒▒▓▓▄ ▄██▒▒▓█  ▄ ▒██▄█▓▒ ▒░ ▓██▓ ░ ░██░▒██   ██░▓██▒  ▐▌██▒$(END)"
+	@echo "$(PAD)$(PURPLE)\t░██░▒██░   ▓██░▒ ▓███▀ ░░▒████▒▒██▒ ░  ░  ▒██▒ ░ ░██░░ ████▓▒░▒██░   ▓██░$(END)"
+	@echo "$(PAD)$(PURPLE)\t░▓  ░ ▒░   ▒ ▒ ░ ░▒ ▒  ░░░ ▒░ ░▒▓▒░ ░  ░  ▒ ░░   ░▓  ░ ▒░▒░▒░ ░ ▒░   ▒ ▒ $(END)"
+	@echo "$(PAD)$(PURPLE)\t ▒ ░░ ░░   ░ ▒░  ░  ▒    ░ ░  ░░▒ ░         ░     ▒ ░  ░ ▒ ▒░ ░ ░░   ░ ▒░$(END)"
+	@echo "$(PAD)$(PURPLE)\t ▒ ░   ░   ░ ░ ░           ░   ░░         ░       ▒ ░░ ░ ░ ▒     ░   ░ ░ $(END)"
+	@echo "$(PAD)$(PURPLE)\t ░           ░ ░ ░         ░  ░                   ░      ░ ░           ░ $(END)"
+	@echo "$(PAD)$(PURPLE)\t               ░                                                         $(END)"
 	@echo "\t"
 	@echo "\t"
 	@echo "This project sets up a small infrastructure composed of different services under specific rules."
