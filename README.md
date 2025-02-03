@@ -34,19 +34,20 @@ Inception is a System Administration project at 42 school that focuses on Docker
 ```
 inception/
 ├── Makefile
-├── docker-compose.yml
-├── requirements/
-│   ├── nginx/
-│   │   ├── Dockerfile
-│   │   └── conf/
-│   ├── wordpress/
-│   │   ├── Dockerfile
-│   │   └── conf/
-│   └── mariadb/
-│       ├── Dockerfile
-│       └── conf/
 └── srcs/
-    └── .env
+    │── docker-compose.yml
+    │── .env
+    └── requirements/
+        ├── nginx/
+        │   ├── Dockerfile
+        │   └── tools/
+        ├── wordpress/
+        │   ├── Dockerfile
+        │   └── tools/
+        └── mariadb/
+            ├── Dockerfile
+            └── tools/
+
 ```
 
 ## Installation & Setup
