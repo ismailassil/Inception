@@ -1,6 +1,5 @@
 DB_DIR_PATH	= "/home/${USER}/data/mariadb"
 WP_DIR_PATH	= "/home/${USER}/data/wordpress"
-RD_DIR_PATH	= "/home/${USER}/data/redis"
 ROOT_DIR	= "/home/$(USER)/data"
 DCK_PATH	= "./srcs/docker-compose.yml"
 
@@ -70,7 +69,7 @@ ip:
 		`docker ps -q -f "name=$(FT_SRV)"`
 
 mkdir:
-	@mkdir -p $(DB_DIR_PATH) $(WP_DIR_PATH) $(RD_DIR_PATH)
+	@mkdir -p $(DB_DIR_PATH) $(WP_DIR_PATH)
 
 clean:
 	@docker stop `docker compose -p $(DCK_NAME) ps -q` >/dev/null 2>&1 || true
